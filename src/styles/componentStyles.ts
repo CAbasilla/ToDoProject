@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 20,
-    bottom: 20,
+    bottom: 10,
     right: 10,
   },
   fabStyle: {
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     padding: 10,
-    borderRadius: 5,
   },
   todoView: {
     flexDirection: 'row',
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
   },
   editTouchable: {
     backgroundColor: '#663399',
-    height: '70%',
+    height: 55,
     borderRadius: 5,
     justifyContent: 'center',
     top: 5,
@@ -54,20 +53,13 @@ const styles = StyleSheet.create({
   },
   deleteTouchable: {
     backgroundColor: '#663399',
-    height: '70%',
+    height: 55,
     borderRadius: 5,
     justifyContent: 'center',
     top: 5,
     right: 5,
   },
-  deleteText: {
-    color: 'white',
-    fontWeight: '700',
-    textAlign: 'center',
-    width: 50,
-    justifyContent: 'center',
-  },
-  editText: {
+  actionText: {
     color: 'white',
     fontWeight: '700',
     textAlign: 'center',

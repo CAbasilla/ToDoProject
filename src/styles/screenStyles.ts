@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   viewHome: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'aliceblue',
   },
   titleHome: {
     fontSize: 24,
     fontWeight: 'bold',
-    padding: 20,
+    paddingTop: 20,
     paddingBottom: 0,
+    marginLeft: 20,
   },
   container: {
     width: '100%',
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   color: {
-    width: 30, height: 30,
+    width: 30,
+    height: 30,
     marginRight: 20,
     borderRadius: 3,
   },

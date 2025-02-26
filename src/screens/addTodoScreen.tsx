@@ -4,25 +4,38 @@ import { TextInput } from 'react-native-paper';
 import {
     useNavigation,
   } from '@react-navigation/native';
-import ITodo from '../models/todo.model';
+  import Toast from 'react-native-simple-toast';
 import { styles } from '../styles/screenStyles';
+import { Error } from '../components/Error';
+import { useCreateTodoMutation } from '../services/todoServices';
 
 interface IAddTodoProps {
-  data?: ITodo
   route: any
 }
 
-const AddTodoScreen = ( props: IAddTodoProps ) => {
-  const [text, setText] = useState(props.data?.text || '');
+const AddTodoScreen = ( _props: IAddTodoProps ) => {
+  const [text, setText] = useState('');
   const [error, setError] = useState(false);
   const navigation = useNavigation();
 
-  const onSave = () => {
+  const  [ createTodo ]  = useCreateTodoMutation();
+
+  const onSave = async() => {
     if (text.trim().length === 0) {
       setError(true);
       return;
     }
-    navigation.popTo('Home', { text: text });
+
+    try {
+      const payload = await createTodo({ text: text }).unwrap();
+      console.log('fulfilled', payload);
+    } catch (err) {
+      console.error('rejected', err);
+    }
+    navigation.goBack('Home');
+    Toast.showWithGravity('Slide added To Do to select actions.', Toast.LONG, Toast.CENTER, {
+      tapToDismissEnabled: true,
+    });
   };
 
   return (
@@ -31,7 +44,7 @@ const AddTodoScreen = ( props: IAddTodoProps ) => {
           <TextInput
             style={styles.textInput}
             label={'What To Do?'}
-            value={props.data?.text}
+            value={text}
             mode="outlined"
             activeOutlineColor="black"
             onChangeText={setText}
@@ -39,7 +52,7 @@ const AddTodoScreen = ( props: IAddTodoProps ) => {
             numberOfLines={10}
             error={error}
           />
-          {error ? <Text style={styles.errorText}>Invalid input, please try again!</Text> : ''}
+          {error && <Error/>}
         </View>
 
         <View style={styles.menu} >

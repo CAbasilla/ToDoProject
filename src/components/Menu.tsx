@@ -6,7 +6,7 @@ import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { styles } from '../styles/componentStyles';
 
 interface IMenu {
-  onAddTodo: () => void
+  onAddTodo: Function
 }
 
 const  Menu = (props: IMenu) => {

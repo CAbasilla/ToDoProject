@@ -2,21 +2,35 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import {
-    useNavigation,
-  } from '@react-navigation/native';
+  useNavigation,
+} from '@react-navigation/native';
 import { styles } from '../styles/screenStyles';
+import { Error } from '../components/Error';
+import { useUpdateTodoMutation } from '../services/todoServices';
+interface IEditTodoProps {
+  route: any
+}
 
-const EditTodoScreen = ( { route } ) => {
-  const [text, setText] = useState(route.params.data?.text);
+const EditTodoScreen = (props: IEditTodoProps) => {
+  const [text, setText] = useState(props.route.params.text);
   const [error, setError] = useState(false);
   const navigation = useNavigation();
+  const  [ updateTodo ]  = useUpdateTodoMutation();
 
-  const onSave = () => {
+  const onSave = async() => {
     if (text.trim().length === 0) {
       setError(true);
       return;
     }
-    navigation.popTo('Home', { text: text, id: route.params.data?.id });
+    if (props.route.params.id) {
+      try {
+        const payload = await updateTodo({ id: props.route.params.id, text: text }).unwrap();
+        console.log('fulfilled', payload);
+      } catch (err) {
+        console.error('rejected', err);
+      }
+    }
+    navigation.goBack('Home');
   };
 
   return (
@@ -26,7 +40,7 @@ const EditTodoScreen = ( { route } ) => {
             style={styles.textInput}
             label={'To Do:'}
             value={text}
-            defaultValue={route.params.data?.text}
+            defaultValue={text}
             mode="outlined"
             activeOutlineColor="black"
             onChangeText={setText}
@@ -34,7 +48,7 @@ const EditTodoScreen = ( { route } ) => {
             numberOfLines={10}
             error={error}
           />
-          {error ? <Text style={styles.errorText}>Invalid input, please try again!</Text> : ''}
+          {error && <Error/>}
         </View>
 
         <View style={styles.menu} >
